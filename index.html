@@ -24,6 +24,26 @@
     --amber-soft:#F3E4C8;
     --shadow: 0 1px 2px rgba(25,23,19,0.04), 0 8px 24px rgba(25,23,19,0.06);
   }
+  html[data-theme="dark"]{
+    --paper:#0A0C0D;
+    --paper-raised:#14181A;
+    --ink:#E9E6DD;
+    --ink-soft:#A19C90;
+    --ink-faint:#63615A;
+    --line:#242A2C;
+    --profit:#27C46B;
+    --profit-soft:rgba(39,196,107,0.14);
+    --profit-mid:#1E8F52;
+    --loss:#F0524A;
+    --loss-soft:rgba(240,82,74,0.14);
+    --loss-mid:#B93832;
+    --amber:#F0AC3F;
+    --amber-soft:rgba(240,172,63,0.14);
+    --shadow: 0 1px 2px rgba(0,0,0,0.35), 0 8px 24px rgba(0,0,0,0.45);
+  }
+  html[data-theme="dark"] body{ background: radial-gradient(ellipse at top, #101416 0%, #0A0C0D 60%); }
+  html[data-theme="dark"] header.topbar{ background:rgba(10,12,13,0.88); }
+  html[data-theme="dark"] .brand .mark{ box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08), 0 0 14px rgba(39,196,107,0.25); }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
@@ -120,35 +140,53 @@
   .legend{display:flex; gap:14px; font-size:11px; color:var(--ink-soft); align-items:center; flex-wrap:wrap;}
   .legend .sw{width:10px;height:10px;border-radius:3px; display:inline-block; margin-right:5px; vertical-align:-1px;}
 
-  .cal-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:8px;}
-  .cal-dow{font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-faint); text-align:center; padding-bottom:4px; font-weight:600;}
+  .cal-grid{display:grid; grid-template-columns:repeat(7,1fr) 0.82fr; gap:5px;}
+  .week-total{
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;
+    border-radius:7px; border:1px dashed var(--line); background:var(--paper);
+    font-family:'IBM Plex Mono',monospace;
+  }
+  .week-total.pos{ color:var(--profit); border-color:var(--profit-mid); background:var(--profit-soft); }
+  .week-total.neg{ color:var(--loss); border-color:var(--loss-mid); background:var(--loss-soft); }
+  .week-total.muted{ color:var(--ink-faint); }
+  .week-total .wt-label{ font-size:8px; letter-spacing:.08em; opacity:.75; }
+  .week-total .wt-val{ font-size:9.5px; font-weight:700; text-align:center; line-height:1.15; padding:0 2px; word-break:break-word; }
+  .cal-dow{font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-faint); text-align:center; padding-bottom:3px; font-weight:600;}
   .cal-cell{
-    position:relative; aspect-ratio:1/0.92; border-radius:10px; border:1px solid var(--line);
-    background:var(--paper); cursor:pointer; padding:8px; display:flex; flex-direction:column; justify-content:space-between;
+    position:relative; aspect-ratio:1/0.68; border-radius:7px; border:1px solid var(--line);
+    background:var(--paper); cursor:pointer; padding:5px 6px; display:flex; flex-direction:column; justify-content:space-between;
     transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
     overflow:hidden;
   }
   .cal-cell.empty{background:transparent; border-color:transparent; cursor:default;}
   .cal-cell.out{opacity:.35;}
-  .cal-cell:not(.empty):hover{transform:translateY(-2px); box-shadow:0 6px 18px rgba(25,23,19,0.1); border-color:var(--ink-faint); z-index:5;}
-  .cal-cell .daynum{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-soft); font-weight:500;}
+  .cal-cell:not(.empty):hover{transform:translateY(-1px); box-shadow:0 6px 18px rgba(25,23,19,0.1); border-color:var(--ink-faint); z-index:5;}
+  .cal-cell .daynum{font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--ink-soft); font-weight:500;}
   .cal-cell.today .daynum{color:var(--amber); font-weight:700;}
   .cal-cell.today{border-color:var(--amber);}
-  .cal-cell .pnl{font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; align-self:flex-end; text-align:right;}
+  .cal-cell .pnl{font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:600; align-self:flex-end; text-align:right; line-height:1.15;}
   .cal-cell.profit{background:var(--profit-soft);}
   .cal-cell.profit .pnl{color:var(--profit);}
   .cal-cell.loss{background:var(--loss-soft);}
   .cal-cell.loss .pnl{color:var(--loss);}
-  .cal-cell .bar{position:absolute; left:0; bottom:0; width:100%; height:4px;}
+  .cal-cell .bar{position:absolute; left:0; bottom:0; width:100%; height:3px;}
   .cal-cell.profit .bar{background:var(--profit);}
   .cal-cell.loss .bar{background:var(--loss);}
-  .cal-cell .flag{position:absolute; top:6px; right:6px; width:6px; height:6px; border-radius:50%; background:var(--amber);}
-  .cal-cell .plus{color:var(--ink-faint); font-size:11px; align-self:flex-end;}
+  .cal-cell .flag{position:absolute; top:4px; right:4px; width:5px; height:5px; border-radius:50%; background:var(--amber);}
+  .cal-cell .plus{color:var(--ink-faint); font-size:9px; align-self:flex-end;}
+  @media (max-width:600px){
+    .cal-grid{gap:4px; grid-template-columns:repeat(7,1fr) 0.62fr;}
+    .cal-cell{border-radius:6px; padding:4px 5px;}
+    .cal-cell .daynum{font-size:9px;}
+    .cal-cell .pnl{font-size:8.5px;}
+    .week-total .wt-label{display:none;}
+    .week-total .wt-val{font-size:8px;}
+  }
 
   /* hover tooltip */
   .tooltip{
-    position:fixed; z-index:200; pointer-events:none; background:var(--ink); color:var(--paper);
-    padding:12px 14px; border-radius:10px; font-size:12px; max-width:240px; box-shadow:0 12px 30px rgba(0,0,0,.25);
+    position:fixed; z-index:200; pointer-events:none; background:#191713; color:#FAFAF6;
+    padding:12px 14px; border-radius:10px; font-size:12px; max-width:240px; box-shadow:0 12px 30px rgba(0,0,0,.35);
     opacity:0; transform:translateY(4px); transition:opacity .1s ease, transform .1s ease;
   }
   .tooltip.show{opacity:1; transform:translateY(0);}
@@ -274,6 +312,7 @@
     <span class="tag">DAILY P&amp;L JOURNAL · LOCAL-ONLY</span>
   </div>
   <div class="topbar-actions">
+    <button class="btn btn-sm" id="themeBtn" title="Switch between light and dark">🌙 Dark</button>
     <button class="btn btn-sm" id="pasteImportBtn" title="Paste rows copied from your old journal">📋 Paste old journal</button>
     <button class="btn btn-sm" id="persistBtn" title="Ask the browser to never auto-clear this data">🔒 Protect storage</button>
     <button class="btn btn-sm" id="exportBtn">⭳ Export backup</button>
@@ -295,6 +334,19 @@
 <main>
 
   <section class="kpis" id="kpiStrip"></section>
+
+  <section class="card" id="turnoverCard">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:14px;">
+      <div>
+        <h3 style="margin-bottom:4px;">Tax Turnover <span style="font-weight:400; color:var(--ink-faint); font-size:12px;">(F&amp;O, for reference)</span></h3>
+        <div class="mono" id="turnoverValue" style="font-size:26px; font-weight:600;"></div>
+        <div style="font-size:12px; color:var(--ink-soft); margin-top:4px; max-width:520px;">
+          Sum of |net realised P&amp;L| across every logged trade — this is <em>not</em> your traded contract value (which would be much larger). This is an estimate only; confirm with a CA before filing.
+        </div>
+      </div>
+    </div>
+    <div id="auditWarning" style="display:none; margin-top:14px; padding:12px 14px; border-radius:10px; background:var(--loss-soft); border:1px solid var(--loss-mid); color:var(--loss); font-size:13px; font-weight:600;"></div>
+  </section>
 
   <section class="card">
     <div class="cal-head">
@@ -528,8 +580,22 @@
     clearTimeout(showToast._t);
     showToast._t = setTimeout(()=>t.classList.remove('show'), 2600);
   }
+  function sanitizeTrade(raw){
+    if(!raw) return null;
+    return {
+      capital: Number(raw.capital) || 0,
+      gross: Number(raw.gross) || 0,
+      deduct: Number(raw.deduct) || 0,
+      notes: typeof raw.notes === 'string' ? raw.notes : '',
+      tags: Array.isArray(raw.tags) ? raw.tags : [],
+      turnover: (raw.turnover !== undefined && !isNaN(Number(raw.turnover))) ? Number(raw.turnover) : null
+    };
+  }
+  function getEntry(key){
+    return trades[key] ? sanitizeTrade(trades[key]) : null;
+  }
   function allEntriesSorted(){
-    return Object.keys(trades).sort().map(k=>({date:k, ...trades[k]}));
+    return Object.keys(trades).sort().map(k=> ({date:k, ...sanitizeTrade(trades[k])}));
   }
 
   // ---------- KPI strip ----------
@@ -594,10 +660,39 @@
       </div>`;
   }
 
+  // ---------- tax turnover ----------
+  // Turnover = |realised profit| + |realised loss|, summed per trade.
+  // Each Ledger day stores the sanitized net (gross - deduct) as the realised
+  // figure. When multiple trades were combined into one day (e.g. via the
+  // paste importer), that importer stores a separate `turnover` field with
+  // the sum of |realised| per individual trade — since netting offsetting
+  // trades within a day would otherwise understate turnover. For ordinary
+  // single-trade days, |net| and true turnover are identical, so the
+  // fallback is exact, not an approximation.
+  const AUDIT_THRESHOLD = 100000000; // ₹10 Crore, Section 44AB reference point
+  function renderTurnover(){
+    const entries = allEntriesSorted();
+    let turnover = 0;
+    entries.forEach(e=>{
+      const perDayTurnover = (e.turnover !== null) ? e.turnover : Math.abs(e.gross - e.deduct);
+      turnover += perDayTurnover;
+    });
+
+    document.getElementById('turnoverValue').textContent = fmtMoney(turnover);
+
+    const warnEl = document.getElementById('auditWarning');
+    if(turnover >= AUDIT_THRESHOLD){
+      warnEl.style.display = 'block';
+      warnEl.textContent = `⚠️ Turnover has crossed ₹10 Crore — under Section 44AB, a tax audit is typically mandatory once F&O turnover exceeds this threshold. This is informational, not tax advice — please confirm with a Chartered Accountant.`;
+    } else {
+      warnEl.style.display = 'none';
+    }
+  }
+
   // ---------- calendar ----------
   const DOW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
   function renderDow(){
-    document.getElementById('dowRow').innerHTML = DOW.map(d=>`<div class="cal-dow">${d}</div>`).join('');
+    document.getElementById('dowRow').innerHTML = DOW.map(d=>`<div class="cal-dow">${d}</div>`).join('') + `<div class="cal-dow" style="opacity:.6;">WK</div>`;
   }
 
   function renderCalendar(){
@@ -612,7 +707,7 @@
     // find max abs pnl this month for bar scaling
     let maxAbs = 1;
     for(let d=1; d<=daysInMonth; d++){
-      const t = trades[dateKey(viewYear, viewMonth, d)];
+      const t = getEntry(dateKey(viewYear, viewMonth, d));
       if(t){ maxAbs = Math.max(maxAbs, Math.abs(t.gross - t.deduct)); }
     }
 
@@ -632,9 +727,9 @@
       cells.push({d:trailing++, out:true, y:viewMonth===11?viewYear+1:viewYear, m:viewMonth===11?0:viewMonth+1});
     }
 
-    cells.forEach(c=>{
+    cells.forEach((c, idx) => {
       const key = dateKey(c.y, c.m, c.d);
-      const t = trades[key];
+      const t = getEntry(key);
       const cell = document.createElement('div');
       cell.className = 'cal-cell' + (c.out ? ' out':'');
       cell.tabIndex = c.out ? -1 : 0;
@@ -649,7 +744,7 @@
         cell.classList.add(net>=0 ? 'profit' : 'loss');
         const barPct = Math.max(10, Math.min(100, Math.abs(net)/maxAbs*100));
         innerHtml += `<div class="pnl">${net>=0?'+':''}${fmtMoney(net)}</div>`;
-        innerHtml += `<div class="bar" style="height:${barPct*0.06+4}px;"></div>`;
+        innerHtml += `<div class="bar" style="height:${barPct*0.03+3}px;"></div>`;
         if((t.notes && t.notes.trim()) || (t.tags && t.tags.length)){
           innerHtml += `<div class="flag"></div>`;
         }
@@ -670,6 +765,21 @@
       }
 
       grid.appendChild(cell);
+
+      // after every 7th cell (end of a calendar week row), append the week's P&L subtotal
+      if((idx+1) % 7 === 0){
+        const weekCells = cells.slice(idx-6, idx+1);
+        let weekSum = 0, hasData = false, weekTrades = 0;
+        weekCells.forEach(wc=>{
+          const wt = getEntry(dateKey(wc.y, wc.m, wc.d));
+          if(wt){ weekSum += (wt.gross - wt.deduct); hasData = true; weekTrades++; }
+        });
+        const wtEl = document.createElement('div');
+        wtEl.className = 'week-total' + (hasData ? (weekSum>=0?' pos':' neg') : ' muted');
+        wtEl.title = hasData ? `Week total: ${weekSum>=0?'+':''}${fmtMoney(weekSum)} across ${weekTrades} logged day${weekTrades!==1?'s':''}` : 'No trades logged this week';
+        wtEl.innerHTML = `<div class="wt-label">WK</div><div class="wt-val">${hasData ? (weekSum>=0?'+':'') + fmtMoney(weekSum) : '—'}</div>`;
+        grid.appendChild(wtEl);
+      }
     });
   }
 
@@ -803,6 +913,10 @@
   });
 
   // ---------- charts (hand-drawn on <canvas>, zero external dependencies) ----------
+  function cssVar(name){
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
   function fmtCompact(v){
     const sign = v<0 ? '-' : '';
     const abs = Math.abs(v);
@@ -826,17 +940,21 @@
 
   function drawEmpty(ctx, w, h, msg){
     ctx.clearRect(0,0,w,h);
-    ctx.fillStyle = '#A79F91';
+    ctx.fillStyle = cssVar('--ink-faint');
     ctx.font = '13px Inter, sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(msg, w/2, h/2);
   }
 
-  function drawEquityCurve(canvas, labels, data){
+  function drawEquityCurve(canvas, labels, data, hoverIndex){
     const {ctx, w, h} = sizeCanvas(canvas, 170);
     ctx.clearRect(0,0,w,h);
-    if(data.length === 0){ drawEmpty(ctx,w,h,'No trades logged yet'); return; }
+    if(data.length === 0){ drawEmpty(ctx,w,h,'No trades logged yet'); equityLayout = null; return; }
+
+    const cLine = cssVar('--line'), cFaint = cssVar('--ink-faint'), cAmber = cssVar('--amber'),
+          cAmberSoft = cssVar('--amber-soft'), cProfit = cssVar('--profit'), cLoss = cssVar('--loss'),
+          cCard = cssVar('--paper-raised');
 
     const pad = {top:14, right:12, bottom:22, left:56};
     const plotW = w - pad.left - pad.right;
@@ -846,8 +964,11 @@
     const xAt = i => pad.left + (data.length===1 ? plotW/2 : (i/(data.length-1))*plotW);
     const yAt = v => pad.top + (1 - (v-min)/range) * plotH;
 
-    ctx.strokeStyle = '#E4DFD3';
-    ctx.fillStyle = '#A79F91';
+    // remember layout so pointer handlers can map mouse/touch X back to a data index
+    equityLayout = {pad, plotW, plotH, w, h, count:data.length};
+
+    ctx.strokeStyle = cLine;
+    ctx.fillStyle = cFaint;
     ctx.font = '10px "IBM Plex Mono", monospace';
     ctx.textAlign = 'right';
     ctx.textBaseline = 'middle';
@@ -861,7 +982,7 @@
     }
     if(min < 0 && max > 0){
       const y0 = yAt(0);
-      ctx.strokeStyle = '#C9C2B2';
+      ctx.strokeStyle = cFaint;
       ctx.beginPath(); ctx.moveTo(pad.left,y0); ctx.lineTo(w-pad.right,y0); ctx.stroke();
     }
 
@@ -871,12 +992,12 @@
     ctx.lineTo(xAt(data.length-1), yAt(min));
     ctx.lineTo(xAt(0), yAt(min));
     ctx.closePath();
-    ctx.fillStyle = 'rgba(201,138,44,0.14)';
+    ctx.fillStyle = cAmberSoft;
     ctx.fill();
 
     ctx.beginPath();
     data.forEach((v,i)=>{ const x=xAt(i), y=yAt(v); i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y); });
-    ctx.strokeStyle = '#C98A2C';
+    ctx.strokeStyle = cAmber;
     ctx.lineWidth = 2;
     ctx.lineJoin = 'round';
     ctx.stroke();
@@ -884,17 +1005,36 @@
     const lastX = xAt(data.length-1), lastY = yAt(data[data.length-1]);
     ctx.beginPath();
     ctx.arc(lastX, lastY, 3.5, 0, Math.PI*2);
-    ctx.fillStyle = data[data.length-1] >= 0 ? '#0E7C4A' : '#B23A2E';
+    ctx.fillStyle = data[data.length-1] >= 0 ? cProfit : cLoss;
     ctx.fill();
 
-    ctx.fillStyle = '#A79F91';
+    ctx.fillStyle = cFaint;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'alphabetic';
     const idxs = data.length > 1 ? [0, Math.floor((data.length-1)/2), data.length-1] : [0];
     idxs.forEach(i => ctx.fillText(labels[i], xAt(i), h-6));
+
+    // crosshair + highlighted point while hovering/scrubbing
+    if(hoverIndex !== null && hoverIndex !== undefined && data[hoverIndex] !== undefined){
+      const hx = xAt(hoverIndex), hy = yAt(data[hoverIndex]);
+      ctx.save();
+      ctx.setLineDash([3,3]);
+      ctx.strokeStyle = cFaint;
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(hx, pad.top); ctx.lineTo(hx, h-pad.bottom); ctx.stroke();
+      ctx.restore();
+
+      ctx.beginPath();
+      ctx.arc(hx, hy, 5.5, 0, Math.PI*2);
+      ctx.fillStyle = data[hoverIndex] >= 0 ? cProfit : cLoss;
+      ctx.fill();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = cCard;
+      ctx.stroke();
+    }
   }
 
-  function drawWinLossDonut(canvas, wins, losses, flat){
+  function drawWinLossDonut(canvas, wins, losses, flat, hoverKey){
     const {ctx, w, h} = sizeCanvas(canvas, 170);
     ctx.clearRect(0,0,w,h);
     const total = wins + losses + flat;
@@ -902,35 +1042,51 @@
     const radius = Math.max(20, Math.min(cx, cy) - 6);
     const innerR = radius * 0.62;
 
-    if(total === 0){ drawEmpty(ctx,w,h,'No trades logged yet'); return; }
+    if(total === 0){ drawEmpty(ctx,w,h,'No trades logged yet'); donutLayout = null; return; }
 
-    const segs = [{v:wins, color:'#0E7C4A'}, {v:losses, color:'#B23A2E'}, {v:flat, color:'#E4DFD3'}];
+    const cProfit = cssVar('--profit'), cLoss = cssVar('--loss'), cLine = cssVar('--line'),
+          cCard = cssVar('--paper-raised'), cInk = cssVar('--ink'), cInkSoft = cssVar('--ink-soft');
+
+    const segs = [
+      {key:'profit', label:'Profit', v:wins, color:cProfit},
+      {key:'loss', label:'Loss', v:losses, color:cLoss},
+      {key:'flat', label:'Flat', v:flat, color:cLine}
+    ];
     let start = -Math.PI/2;
+    const meta = [];
     segs.forEach(seg=>{
       if(seg.v <= 0) return;
       const angle = (seg.v/total) * Math.PI*2;
+      const isHover = hoverKey === seg.key;
+      const r = isHover ? radius + 5 : radius;
       ctx.beginPath();
       ctx.moveTo(cx,cy);
-      ctx.arc(cx,cy,radius,start,start+angle);
+      ctx.arc(cx,cy,r,start,start+angle);
       ctx.closePath();
       ctx.fillStyle = seg.color;
+      ctx.globalAlpha = (hoverKey && !isHover) ? 0.55 : 1;
       ctx.fill();
+      ctx.globalAlpha = 1;
+      meta.push({key:seg.key, label:seg.label, v:seg.v, startAngle:start, endAngle:start+angle});
       start += angle;
     });
+    donutLayout = {cx, cy, radius: radius+5, innerR, total, meta};
+
     ctx.beginPath();
     ctx.arc(cx,cy,innerR,0,Math.PI*2);
-    ctx.fillStyle = '#FFFFFF';
+    ctx.fillStyle = cCard;
     ctx.fill();
 
-    ctx.fillStyle = '#191713';
+    const hovered = hoverKey ? meta.find(m=>m.key===hoverKey) : null;
+    ctx.fillStyle = cInk;
     ctx.font = '600 15px "IBM Plex Mono", monospace';
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText(total + ' days', cx, cy-4);
+    ctx.fillText(hovered ? String(hovered.v) : (total + ' days'), cx, cy-4);
     ctx.font = '11px Inter, sans-serif';
-    ctx.fillStyle = '#6B655C';
-    ctx.fillText(((wins/total)*100).toFixed(0) + '% win', cx, cy+14);
+    ctx.fillStyle = cInkSoft;
+    ctx.fillText(hovered ? `${hovered.label} (${(hovered.v/total*100).toFixed(0)}%)` : ((wins/total)*100).toFixed(0) + '% win', cx, cy+14);
 
-    const items = [{label:'Profit', color:'#0E7C4A', v:wins}, {label:'Loss', color:'#B23A2E', v:losses}, {label:'Flat', color:'#E4DFD3', v:flat}];
+    const items = [{label:'Profit', color:cProfit, v:wins, key:'profit'}, {label:'Loss', color:cLoss, v:losses, key:'loss'}, {label:'Flat', color:cLine, v:flat, key:'flat'}];
     let lx = 10;
     const legendY = h-12;
     ctx.font = '11px Inter, sans-serif';
@@ -938,26 +1094,104 @@
     items.forEach(it=>{
       ctx.fillStyle = it.color;
       ctx.fillRect(lx, legendY-5, 10, 10);
-      ctx.fillStyle = '#6B655C';
+      ctx.fillStyle = (hoverKey === it.key) ? cInk : cInkSoft;
       const label = `${it.label} (${it.v})`;
       ctx.fillText(label, lx+14, legendY);
       lx += ctx.measureText(label).width + 30;
     });
   }
 
+  // ---------- chart interactivity state ----------
+  let equityChartData = {labels:[], data:[]};
+  let equityLayout = null;
+  let equityEntries = [];
+  let donutLayout = null;
+  let donutCounts = {wins:0, losses:0, flat:0};
+
   function renderCharts(){
     const entries = allEntriesSorted();
+    equityEntries = entries;
     let cum = 0;
     const labels = entries.map(e => e.date.slice(5));
     const data = entries.map(e => { cum += (e.gross - e.deduct); return cum; });
+    equityChartData = {labels, data};
 
-    drawEquityCurve(document.getElementById('equityChart'), labels, data);
+    drawEquityCurve(document.getElementById('equityChart'), labels, data, null);
 
     const wins = entries.filter(e => (e.gross - e.deduct) > 0).length;
     const losses = entries.filter(e => (e.gross - e.deduct) < 0).length;
     const flat = entries.length - wins - losses;
-    drawWinLossDonut(document.getElementById('winLossChart'), wins, losses, flat);
+    donutCounts = {wins, losses, flat};
+    drawWinLossDonut(document.getElementById('winLossChart'), wins, losses, flat, null);
   }
+
+  // --- equity curve scrubbing ---
+  const equityCanvas = document.getElementById('equityChart');
+  equityCanvas.style.cursor = 'crosshair';
+  function handleEquityPointer(clientX, clientY){
+    if(!equityLayout || equityEntries.length === 0) return;
+    const rect = equityCanvas.getBoundingClientRect();
+    const xPix = clientX - rect.left;
+    const {pad, plotW} = equityLayout;
+    let t = (xPix - pad.left) / plotW;
+    t = Math.max(0, Math.min(1, t));
+    const idx = Math.round(t * (equityEntries.length - 1));
+    const entry = equityEntries[idx];
+    const cum = equityChartData.data[idx];
+    const net = entry.gross - entry.deduct;
+
+    drawEquityCurve(equityCanvas, equityChartData.labels, equityChartData.data, idx);
+
+    tooltipEl.innerHTML = `
+      <div class="t-date">${entry.date}</div>
+      <div class="row"><span>Day net</span><b>${net>=0?'+':''}${fmtMoney(net)}</b></div>
+      <div class="row"><span>Cumulative P&amp;L</span><b>${cum>=0?'+':''}${fmtMoney(cum)}</b></div>
+    `;
+    tooltipEl.classList.add('show');
+    positionTooltip({clientX, clientY});
+  }
+  function resetEquityHover(){
+    hideTooltip();
+    if(equityChartData.data.length) drawEquityCurve(equityCanvas, equityChartData.labels, equityChartData.data, null);
+  }
+  equityCanvas.addEventListener('mousemove', e => handleEquityPointer(e.clientX, e.clientY));
+  equityCanvas.addEventListener('mouseleave', resetEquityHover);
+  equityCanvas.addEventListener('touchstart', e => { const t = e.touches[0]; if(t) handleEquityPointer(t.clientX, t.clientY); }, {passive:true});
+  equityCanvas.addEventListener('touchmove', e => { const t = e.touches[0]; if(t){ handleEquityPointer(t.clientX, t.clientY); e.preventDefault(); } }, {passive:false});
+  equityCanvas.addEventListener('touchend', resetEquityHover);
+
+  // --- donut hover ---
+  const donutCanvas = document.getElementById('winLossChart');
+  donutCanvas.style.cursor = 'pointer';
+  function handleDonutPointer(clientX, clientY){
+    if(!donutLayout) return;
+    const rect = donutCanvas.getBoundingClientRect();
+    const dx = (clientX - rect.left) - donutLayout.cx;
+    const dy = (clientY - rect.top) - donutLayout.cy;
+    const dist = Math.hypot(dx, dy);
+    if(dist < donutLayout.innerR || dist > donutLayout.radius){ resetDonutHover(); return; }
+    let a = Math.atan2(dy, dx);
+    if(a < -Math.PI/2) a += Math.PI*2;
+    const seg = donutLayout.meta.find(m => a >= m.startAngle && a <= m.endAngle);
+    if(!seg){ resetDonutHover(); return; }
+    drawWinLossDonut(donutCanvas, donutCounts.wins, donutCounts.losses, donutCounts.flat, seg.key);
+    tooltipEl.innerHTML = `
+      <div class="t-date">${seg.label} days</div>
+      <div class="row"><span>Count</span><b>${seg.v}</b></div>
+      <div class="row"><span>Share</span><b>${(seg.v/donutLayout.total*100).toFixed(1)}%</b></div>
+    `;
+    tooltipEl.classList.add('show');
+    positionTooltip({clientX, clientY});
+  }
+  function resetDonutHover(){
+    hideTooltip();
+    drawWinLossDonut(donutCanvas, donutCounts.wins, donutCounts.losses, donutCounts.flat, null);
+  }
+  donutCanvas.addEventListener('mousemove', e => handleDonutPointer(e.clientX, e.clientY));
+  donutCanvas.addEventListener('mouseleave', resetDonutHover);
+  donutCanvas.addEventListener('touchstart', e => { const t = e.touches[0]; if(t) handleDonutPointer(t.clientX, t.clientY); }, {passive:true});
+  donutCanvas.addEventListener('touchmove', e => { const t = e.touches[0]; if(t){ handleDonutPointer(t.clientX, t.clientY); e.preventDefault(); } }, {passive:false});
+  donutCanvas.addEventListener('touchend', resetDonutHover);
 
   let resizeTimer = null;
   window.addEventListener('resize', ()=>{
@@ -1096,6 +1330,7 @@
   // ---------- render all ----------
   function renderAll(){
     safeRun('renderKpis', renderKpis);
+    safeRun('renderTurnover', renderTurnover);
     safeRun('renderCalendar', renderCalendar);
     safeRun('renderCharts', renderCharts);
     safeRun('renderTagBars', renderTagBars);
@@ -1341,10 +1576,11 @@
   function aggregateRows(rows){
     const byDate = {};
     rows.forEach(r=>{
-      if(!byDate[r.date]) byDate[r.date] = {capital:r.cap, gross:0, deduct:0, notesList:[], tradeCount:0};
+      if(!byDate[r.date]) byDate[r.date] = {capital:r.cap, gross:0, deduct:0, turnover:0, notesList:[], tradeCount:0};
       const day = byDate[r.date];
       day.gross += r.pnl;
       day.deduct += (r.pnl - r.realised);
+      day.turnover += Math.abs(r.realised);
       day.tradeCount++;
       if(r.notes && !day.notesList.includes(r.notes)) day.notesList.push(r.notes);
     });
@@ -1354,6 +1590,7 @@
         capital: Math.round(v.capital*100)/100,
         gross: Math.round(v.gross*100)/100,
         deduct: Math.round(v.deduct*100)/100,
+        turnover: Math.round(v.turnover*100)/100,
         notes: v.notesList.join(' · '),
         tags: [],
         _tradeCount: v.tradeCount
@@ -1391,7 +1628,7 @@
     if(!pastedAggregate) return;
     const clean = {};
     Object.entries(pastedAggregate).forEach(([d,e])=>{
-      clean[d] = {capital:e.capital, gross:e.gross, deduct:e.deduct, notes:e.notes, tags:e.tags};
+      clean[d] = {capital:e.capital, gross:e.gross, deduct:e.deduct, turnover:e.turnover, notes:e.notes, tags:e.tags};
     });
     const collisions = Object.keys(clean).filter(k => trades[k]);
     const proceed = collisions.length === 0 || confirm(
@@ -1405,6 +1642,20 @@
     pasteOverlay.classList.remove('show');
     showToast(`Imported ${Object.keys(clean).length} days from pasted journal`);
   });
+
+  // ---------- theme ----------
+  const THEME_KEY = 'ledger_theme';
+  function applyTheme(theme){
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem(THEME_KEY, theme);
+    document.getElementById('themeBtn').textContent = theme === 'dark' ? '☀️ Light' : '🌙 Dark';
+  }
+  document.getElementById('themeBtn').addEventListener('click', ()=>{
+    const current = document.documentElement.getAttribute('data-theme') || 'light';
+    applyTheme(current === 'dark' ? 'light' : 'dark');
+    safeRun('renderCharts', renderCharts);
+  });
+  applyTheme(localStorage.getItem(THEME_KEY) || 'light');
 
   renderDow();
   renderAll();
